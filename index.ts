@@ -1,5 +1,7 @@
-// Import stylesheets
-import './style.css';
+import './scss'
+import message from './message'
+
+alert('Привет!!!');
 
 // Настройка наблюдения за изменениями в DOM
 const targetNode = document.getElementById('app');
@@ -13,15 +15,15 @@ const config = { attributes: true, childList: true, subtree: true };
 
 // Создаем новый экземпляр MutationObserver
 const observer = new MutationObserver((mutations) => {
-  console.log('!!!!!!!!!!!');
-  mutations.forEach((mutation) => {
-    // Обрабатываем каждую мутацию
-    console.log(mutation.type);
-    console.log(mutation.target);
-    console.log(mutation.addedNodes);
-    console.log(mutation.removedNodes);
-    // Другие свойства мутации, которые вы можете использовать
-  });
+    console.log('!!');
+    mutations.forEach((mutation) => {
+        // Обрабатываем каждую мутацию
+        console.log(mutation.type);
+        console.log(mutation.target);
+        console.log(mutation.addedNodes);
+        console.log(mutation.removedNodes);
+        // Другие свойства мутации, которые вы можете использовать
+    });
 });
 
 // Начинаем наблюдение
@@ -29,7 +31,7 @@ observer.observe(targetNode, config);
 
 // Позже можно остановить наблюдение
 setTimeout((_) => {
-  observer.disconnect();
+    observer.disconnect();
 }, 5000);
 
 // ======================================================================================= //
@@ -37,39 +39,41 @@ setTimeout((_) => {
 targetElement.innerHTML = `<h1>TypeScript Starter</h1>`;
 
 function addOneElement(): void {
-  const div = document.createElement('test-div');
-  div.textContent = 'Single element';
-  targetElement.appendChild(div);
+    const div = document.createElement('test-div');
+    div.textContent = 'Single element';
+    targetElement.appendChild(div);
 }
 
 function addElementsTree(): void {
-  const div = document.createElement('div');
+    const div = document.createElement('div');
 
-  div.textContent = 'Elements tree: ';
+    div.textContent = 'Elements tree: ';
 
-  for (let i = 0; i < 10; i++) {
-    const span = document.createElement('span');
-    span.textContent = i.toString();
-    div.appendChild(span);
-  }
+    for (let i = 0; i < 10; i++) {
+        const span = document.createElement('span');
+        span.textContent = i.toString();
+        div.appendChild(span);
+    }
 
-  targetElement.appendChild(div);
+    targetElement.appendChild(div);
 }
 
 Element.prototype.remove = function () {
-  this.parentElement.removeChild(this);
+    this.parentElement.removeChild(this);
 };
-NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
-  for (var i = this.length - 1; i >= 0; i--) {
-    if (this[i] && this[i].parentElement) {
-      this[i].parentElement.removeChild(this[i]);
+NodeList.prototype['remove'] = HTMLCollection.prototype['remove'] = function () {
+    for (var i = this.length - 1; i >= 0; i--) {
+        if (this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
     }
-  }
 };
 addOneElement();
 setTimeout((_) => {
-  document.querySelector('test-div').remove();
+    document.querySelector('test-div').remove();
 }, 3000);
 
 oneButtonElement.addEventListener('click', () => addOneElement());
 manyButtonElement.addEventListener('click', () => addElementsTree());
+
+console.log(message)
